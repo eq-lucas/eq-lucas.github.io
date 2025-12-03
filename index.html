@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barbearia Wiese - O Futuro do Agendamento</title>
+    
+    <!-- Fontes e Ícones -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #6366f1;       
+            --primary-dark: #4338ca;  
+            --bg-dark: #0f172a;       
+            --bg-card: #1e293b;       
+            --text-light: #f8fafc;    
+            --text-dim: #94a3b8;      
+            --accent: #818cf8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Urbanist', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- Tipografia --- */
+        h1, h2, h3 { font-weight: 800; line-height: 1.2; }
+        
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title span { color: var(--primary); }
+
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
+        section { padding: 100px 0; border-bottom: 1px solid #1e293b; }
+
+        /* --- Header / Hero --- */
+        header {
+            padding: 140px 20px 100px;
+            text-align: center;
+            background: radial-gradient(circle at top center, #1e293b 0%, #0f172a 70%);
+        }
+
+        header h1 {
+            font-size: 5rem;
+            letter-spacing: -3px;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #fff, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header p.lead {
+            font-size: 1.5rem;
+            color: var(--text-dim);
+            max-width: 800px;
+            margin: 0 auto 40px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(99, 102, 241, 0.5);
+        }
+
+        /* --- 2. Sobre a Empresa (15 Pontos) --- */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            padding: 40px;
+            border-radius: 24px;
+            border: 1px solid #334155;
+            transition: 0.3s;
+        }
+
+        .feature-card:hover { border-color: var(--primary); transform: translateY(-5px); }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        /* --- 3. Design Sprint (15 Pontos) + Lightbox --- */
+        .sprint-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .artifact-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid #334155;
+            position: relative;
+        }
+
+        .artifact-content { padding: 25px; text-align: center; }
+
+        .image-container {
+            position: relative;
+            height: 250px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top;
+            transition: transform 0.5s ease;
+        }
+
+        /* Overlay e Botão de Zoom */
+        .zoom-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .image-container:hover .zoom-overlay { opacity: 1; }
+        .image-container:hover img { transform: scale(1.05); }
+
+        .zoom-btn {
+            background: white;
+            color: var(--bg-dark);
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .image-container:hover .zoom-btn { transform: translateY(0); }
+
+        /* --- 4. Protótipo (15 Pontos) --- */
+        .screens-scroll {
+            display: flex;
+            gap: 30px;
+            overflow-x: auto;
+            padding: 20px;
+            justify-content: flex-start;
+        }
+        
+        @media (min-width: 1024px) { .screens-scroll { justify-content: center; } }
+
+        .iphone-frame {
+            width: 280px;
+            height: 600px;
+            background: #000;
+            border-radius: 40px;
+            border: 4px solid #333;
+            position: relative;
+            flex-shrink: 0;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        .iphone-frame img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* --- 5. Equipe (15 Pontos) --- */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+
+        .team-member {
+            text-align: center;
+            padding: 30px;
+            background: var(--bg-card);
+            border-radius: 20px;
+            border: 1px solid #334155;
+        }
+
+        .member-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            overflow: hidden;
+            border: 3px solid var(--primary);
+        }
+
+        .member-photo img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* --- Lightbox Modal --- */
+        .lightbox {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .lightbox.active { display: flex; opacity: 1; }
+
+        .lightbox-img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 8px;
+            box-shadow: 0 0 50px rgba(99, 102, 241, 0.2);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 30px; right: 30px;
+            color: white;
+            font-size: 3rem;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        /* Footer */
+        footer { text-align: center; padding: 60px 20px; color: var(--text-dim); }
+
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <p style="color: var(--primary); font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px;">IHC 2025 • UTFPR-CM</p>
+        <h1>Barbearia Wiese</h1>
+        <p class="lead">Esqueça a demora do WhatsApp. O sistema de agendamento que dá poder ao cliente e organização ao barbeiro.</p>
+        <a href="#prototipo" class="cta-button">Ver Telas do App</a>
+    </header>
+
+    <!-- 2. Sobre a Empresa e Diferenciais (15 Pontos) -->
+    <section id="sobre">
+        <div class="container">
+            <h2 class="section-title">Por que <span>Barbearia Wiese?</span></h2>
+            <p style="text-align: center; max-width: 800px; margin: 0 auto; color: var(--text-dim);">
+                Nascemos para eliminar a fricção entre o "preciso cortar o cabelo" e o "estou na cadeira do barbeiro". Somos a primeira barbearia digital-first de Campo Mourão.
+            </p>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fa-solid fa-bolt feature-icon"></i>
+                    <h3>Agilidade Extrema</h3>
+                    <p>Agende em menos de 30 segundos. Sem esperar o barbeiro responder o WhatsApp entre um corte e outro.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fa-regular fa-eye feature-icon"></i>
+                    <h3>Transparência Total</h3>
+                    <p>Veja a agenda completa. Saiba exatamente quais horários estão livres sem precisar perguntar "tem vaga hoje?".</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fa-solid fa-star feature-icon"></i>
+                    <h3>Escolha Consciente</h3>
+                    <p>Visualize as avaliações de cada profissional (ex: Zé Felipe ★★★★★) e escolha quem cuida melhor do seu estilo.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Design Sprint (15 Pontos) -->
+    <section id="sprint">
+        <div class="container">
+            <h2 class="section-title">Processo de <span>Criação</span></h2>
+            <p style="text-align: center; margin-bottom: 40px; color: var(--text-dim);">Artefatos desenvolvidos durante o Design Sprint para validar a solução.</p>
+            
+            <div class="sprint-grid">
+                
+                <!-- Artefato 1 -->
+                <div class="artifact-card">
+                    <div class="image-container" onclick="openLightbox('images/processo/tela1.png')">
+                        <img src="images/processo/tela1.png" alt="Objetivos Design Sprint">
+                        <div class="zoom-overlay">
+                            <div class="zoom-btn"><i class="fa-solid fa-magnifying-glass-plus"></i> Ampliar</div>
+                        </div>
+                    </div>
+                    <div class="artifact-content">
+                        <h3>1. Objetivos</h3>
+                        <p style="color: var(--text-dim); font-size: 0.9rem;">Definição das metas de longo prazo e métricas de sucesso.</p>
+                    </div>
+                </div>
+
+                <!-- Artefato 2 -->
+                <div class="artifact-card">
+                    <div class="image-container" onclick="openLightbox('images/processo/tela2.png')">
+                        <img src="images/processo/tela2.png" alt="Mapa da Jornada">
+                        <div class="zoom-overlay">
+                            <div class="zoom-btn"><i class="fa-solid fa-magnifying-glass-plus"></i> Ampliar</div>
+                        </div>
+                    </div>
+                    <div class="artifact-content">
+                        <h3>2. Mapa da Jornada</h3>
+                        <p style="color: var(--text-dim); font-size: 0.9rem;">Identificação do "Core" e dos pontos de dor do usuário.</p>
+                    </div>
+                </div>
+
+                <!-- Artefato 3 -->
+                <div class="artifact-card">
+                    <div class="image-container" onclick="openLightbox('images/processo/tela3.png')">
+                        <img src="images/processo/tela3.png" alt="Esboços Crazy 8s">
+                        <div class="zoom-overlay">
+                            <div class="zoom-btn"><i class="fa-solid fa-magnifying-glass-plus"></i> Ampliar</div>
+                        </div>
+                    </div>
+                    <div class="artifact-content">
+                        <h3>3. Ideação</h3>
+                        <p style="color: var(--text-dim); font-size: 0.9rem;">Esboços das telas principais usando a técnica Crazy 8s.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Protótipo Figma (15 Pontos) -->
+    <section id="prototipo">
+        <div class="container">
+            <h2 class="section-title">Telas do <span>Aplicativo</span></h2>
+            
+            <h3 style="text-align: center; margin-bottom: 30px; font-size: 1.5rem; color: var(--text-dim);">Fluxo Mobile (Alta Fidelidade)</h3>
+            <div class="screens-scroll">
+                <div class="iphone-frame"><img src="images/prototipo/tela1.png" alt="Início"></div>
+                <div class="iphone-frame"><img src="images/prototipo/tela2.png" alt="Cadastro"></div>
+                <div class="iphone-frame"><img src="images/prototipo/tela3.png" alt="Dashboard"></div>
+                <div class="iphone-frame"><img src="images/prototipo/tela4.png" alt="Serviço"></div>
+                <div class="iphone-frame"><img src="images/prototipo/tela5.png" alt="Barbeiro"></div>
+                <div class="iphone-frame"><img src="images/prototipo/tela6.png" alt="Horário"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Integrantes da Equipe (15 Pontos) -->
+    <section id="equipe">
+        <div class="container">
+            <h2 class="section-title">O <span>Time</span></h2>
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="member-photo"><img src="images/equipe/gean.jpg" alt="Gean"></div>
+                    <h3>Gean Antunes</h3>
+                    <p style="color: var(--text-dim);">Moderação</p>
+                </div>
+                <div class="team-member">
+                    <div class="member-photo"><img src="images/equipe/lucas.jpg" alt="Lucas"></div>
+                    <h3>Lucas Ferreira</h3>
+                    <p style="color: var(--text-dim);">Prototipagem</p>
+                </div>
+                <div class="team-member">
+                    <div class="member-photo"><img src="images/equipe/luis.jpg" alt="Luis"></div>
+                    <h3>Luis Henrique</h3>
+                    <p style="color: var(--text-dim);">Recrutamento</p>
+                </div>
+                <div class="team-member">
+                    <div class="member-photo"><img src="images/equipe/raul.jpg" alt="Raul"></div>
+                    <h3>Raul Baggio</h3>
+                    <p style="color: var(--text-dim);">Análise de Dados</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>Barbearia Wiese © 2025 • Projeto Acadêmico UTFPR-CM</p>
+    </footer>
+
+    <!-- Lightbox Modal (Zoom) -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <span class="lightbox-close">&times;</span>
+        <img src="" alt="Zoom Image" class="lightbox-img" id="lightbox-img">
+    </div>
+
+    <script>
+        // Script simples para o Lightbox
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+
+        function openLightbox(imageSrc) {
+            lightboxImg.src = imageSrc;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Impede rolagem do fundo
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto'; // Libera rolagem
+        }
+
+        // Fechar com ESC
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                closeLightbox();
+            }
+        });
+    </script>
+
+</body>
+</html>
